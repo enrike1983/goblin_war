@@ -1,0 +1,28 @@
+{#{% extends '@Pinboard/layout.html.twig' %}#}
+{% block body %}
+    <div class="container">
+
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-lg-5 col-md-6 col-sm-8 col-xs-12">
+                <form action="{{ path('login') }}" method="post">
+                    <div class="form-group">
+                        <label for="username">User name</label>
+                        <input type="text" class="form-control" name="_username" id="username" value="{{ last_username }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="_password" id="password">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

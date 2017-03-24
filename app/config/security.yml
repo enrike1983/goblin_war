@@ -1,24 +1,30 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/security.html
 security:
+    encoders:
+        UserBundle\Entity\User:
+            algorithm: bcrypt
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        goblin_war_db_provider:
+            entity:
+                class: UserBundle:User
+                property: username
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         main:
+            pattern: /
+            provider: goblin_war_db_provider
             anonymous: ~
-            # activate different ways to authenticate
+            form_login:
+                check_path: /login
+                login_path: /login
+            logout:
+                path:   /logout
+                #this is the target route "/" where we will be redirected after succesfull logout
+                target: /
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        #anonymously accessible routes let the user get in even if is not authenticated
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #this is the first "forbidden" route of our website!
+        - { path: ^/api, roles: ROLE_USER }
