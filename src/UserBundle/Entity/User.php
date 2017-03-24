@@ -69,6 +69,11 @@ class User implements UserInterface, \Serializable
      */
     private $position = NavigationManager::INITIAL_POSITION;
 
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Monster", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $monster;
+
 
     public function __construct()
     {
@@ -315,5 +320,29 @@ class User implements UserInterface, \Serializable
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Set monster
+     *
+     * @param \AppBundle\Entity\Monster $monster
+     *
+     * @return User
+     */
+    public function setMonster(\AppBundle\Entity\Monster $monster = null)
+    {
+        $this->monster = $monster;
+
+        return $this;
+    }
+
+    /**
+     * Get monster
+     *
+     * @return \AppBundle\Entity\Monster
+     */
+    public function getMonster()
+    {
+        return $this->monster;
     }
 }

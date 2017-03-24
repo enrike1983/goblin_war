@@ -2,3 +2,7 @@ services:
     app.navigation_manager:
         class: AppBundle\Manager\NavigationManager
         arguments: ["%dungeon_map%", "@security.token_storage", "@doctrine.orm.entity_manager"]
+
+    app.battle_manager:
+        class: AppBundle\Manager\BattleManager
+        arguments: ["@security.token_storage", "@doctrine.orm.entity_manager"]

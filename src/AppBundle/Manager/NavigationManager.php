@@ -11,6 +11,7 @@ class NavigationManager
     const RIGHT_KEY = 'right';
     const BACK_KEY = 'back';
     const LEFT_KEY = 'left';
+    const CURRENT_KEY = 'current';
 
     const ROW_KEY = 0;
     const COLUMN_KEY = 1;
@@ -40,6 +41,7 @@ class NavigationManager
         $url_array[self::LEFT_KEY] = $this->getLeftRoom();
         $url_array[self::RIGHT_KEY] = $this->getRightRoom();
         $url_array[self::BACK_KEY] = $this->getBackRoom();
+        $url_array[self::CURRENT_KEY] = $this->getCurrentRoom();
 
         return $url_array;
     }
@@ -53,6 +55,16 @@ class NavigationManager
 
         $this->entity_manager->persist($this->user);
         $this->entity_manager->flush();
+    }
+
+    /**
+     * Get the current room
+     *
+     * @return bool
+     */
+    public function getCurrentRoom()
+    {
+        return $this->dungeon_map[$this->user_position[self::ROW_KEY]][$this->user_position[self::COLUMN_KEY]];
     }
 
     /**

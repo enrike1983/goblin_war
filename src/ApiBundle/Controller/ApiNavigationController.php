@@ -13,6 +13,9 @@ class ApiNavigationController extends FOSRestController
      */
     public function currentPosition()
     {
+        $battle_manager = $this->container->get('app.battle_manager');
+        $battle_manager->generateMonster();
+
         $navigation_manager = $this->container->get('app.navigation_manager');
 
         return $navigation_manager->generateUrls();
