@@ -11,20 +11,27 @@ security:
 
     firewalls:
         main:
-            pattern: /
-            provider: goblin_war_db_provider
             anonymous: ~
-            form_login:
-                check_path: /login
-                login_path: /login
-            logout:
-                path:   /logout
-                #this is the target route "/" where we will be redirected after succesfull logout
-                target: /
+            logout: ~
+            guard:
+                authenticators:
+                    - app.token_authenticator
+
+#            pattern: /
+#            provider: goblin_war_db_provider
+#            anonymous: ~
+#            form_login:
+#                check_path: /login
+#                login_path: /login
+#            logout:
+#                path:   /logout
+#                #this is the target route "/" where we will be redirected after succesfull logout
+#                target: /
 
     access_control:
         #anonymously accessible routes let the user get in even if is not authenticated
         - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #this is the first "forbidden" route of our website!
+        - { path: ^/api/forward, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: ROLE_USER }

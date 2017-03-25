@@ -1,7 +1,9 @@
 <?php
 namespace AppBundle\Manager;
 
+use AppBundle\Event\MovementEvent;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class NavigationManager
@@ -21,12 +23,14 @@ class NavigationManager
     protected $user_position;
     protected $user;
     protected $entity_manager;
+    protected $event_dispatcher;
 
-    public function __construct(array $dungeonMap, TokenStorageInterface $tokenStorage, EntityManager $entityManager)
+    public function __construct(array $dungeonMap, TokenStorageInterface $tokenStorage, EntityManager $entityManager, TraceableEventDispatcher $eventDispatcher)
     {
         $this->dungeon_map = $dungeonMap;
         $this->token_storage = $tokenStorage;
         $this->entity_manager = $entityManager;
+        $this->event_dispatcher = $eventDispatcher;
 
         $this->user = $this->token_storage->getToken()->getUser();
         $this->user_position = $this->user->getPosition();

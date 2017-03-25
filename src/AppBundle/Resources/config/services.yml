@@ -1,7 +1,17 @@
 services:
+    app.token_authenticator:
+        class: AppBundle\Security\TokenAuthenticator
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    app.listener.navigation:
+        class: AppBundle\EventListener\NavigationListener
+        arguments: ["@app.battle_manager"]
+        tags:
+            - { name: kernel.event_listener, event: app.movement, method: onMovementEvent }
+
     app.navigation_manager:
         class: AppBundle\Manager\NavigationManager
-        arguments: ["%dungeon_map%", "@security.token_storage", "@doctrine.orm.entity_manager"]
+        arguments: ["%dungeon_map%", "@security.token_storage", "@doctrine.orm.entity_manager", "@event_dispatcher"]
 
     app.battle_manager:
         class: AppBundle\Manager\BattleManager

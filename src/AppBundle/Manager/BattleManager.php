@@ -26,7 +26,7 @@ class BattleManager
      * Generates a random monster with random skills.
      * When a monster is generated it's created in db and associated to the user
      */
-    public function generateMonster()
+    public function spawnMonster()
     {
         //exists already a monster for this user?
         $monster = $this->user->getMonster();
@@ -38,8 +38,8 @@ class BattleManager
         //with a certain probability generates a monster. For now probability = 50% :)
         $rand = mt_rand(0, 100);
 
-        //50% probability
-        if (($rand % 2) === 0) {
+        //15% probability
+        if ($rand <= 15) {
             $new_monster = new Monster();
             $new_monster->setAttack(mt_rand(Monster::MIN_ATTACK, Monster::MAX_ATTACK));
             $new_monster->setUser($this->user);
@@ -51,7 +51,6 @@ class BattleManager
             $this->entity_manager->flush();
 
             return $new_monster;
-
         }
 
         return false;
@@ -76,12 +75,20 @@ class BattleManager
      */
     public function userIsFighting()
     {
+        return $this->user->getMonster();
     }
 
     /**
-     * Makes damage to the user and checks if you are dead :)
+     * Makes damage to the user and checks if you are dead
      */
     protected function damage()
+    {
+    }
+
+    /**
+     * Check if you are dead :D
+     */
+    protected function youAreDead()
     {
     }
 }

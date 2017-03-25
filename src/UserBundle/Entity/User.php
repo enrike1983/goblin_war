@@ -74,6 +74,11 @@ class User implements UserInterface, \Serializable
      */
     private $monster;
 
+    /**
+     * @ORM\Column(type="string", unique=true)
+     */
+    private $apiKey;
+
 
     public function __construct()
     {
@@ -344,5 +349,29 @@ class User implements UserInterface, \Serializable
     public function getMonster()
     {
         return $this->monster;
+    }
+
+    /**
+     * Set apiKey
+     *
+     * @param string $apiKey
+     *
+     * @return User
+     */
+    public function setApiKey($apiKey)
+    {
+        $this->apiKey = $apiKey;
+
+        return $this;
+    }
+
+    /**
+     * Get apiKey
+     *
+     * @return string
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
     }
 }

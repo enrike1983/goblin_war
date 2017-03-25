@@ -71,6 +71,15 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+# Nelmio CORS Configuration
+nelmio_cors:
+    paths:
+        '^/api/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            max_age: 3600
+
 # FOSRest Configuration
 fos_rest:
     body_listener: true
@@ -84,13 +93,3 @@ fos_rest:
         formats:
             json: true
 
-# Nelmio CORS Configuration
-nelmio_cors:
-    defaults:
-        allow_credentials: false
-        allow_origin: ['*']
-        allow_headers: ['*']
-        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-        max_age: 3600
-        hosts: []
-        origin_regex: false

@@ -35,6 +35,7 @@ class LoadUsersFixtures implements FixtureInterface, ContainerAwareInterface
         $user->setUsername('goblin_war_first_user');
         $user->setIsActive(true);
         $user->setEmail('test@goblin_war.dev');
+        $user->setApiKey('123');
 
         $plainPassword = 'goblin_war_first_user';
         $encoder = $this->container->get('security.password_encoder');
