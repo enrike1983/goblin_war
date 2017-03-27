@@ -1,3 +1,5 @@
+![alt text](goblin-war-logo.png "Goblin War")
+
 ## What's this?
 
 This is Goblin War! This is a RESTful engine to build simple but strongly scalable roguelike games.
@@ -10,7 +12,7 @@ Installation is a classical one!
 
 `git clone git@github.com:enrike1983/goblin_war.git`
 
-2. Install vendors ( ensure to have [Composer](https://getcomposer.org/doc/00-intro.md) installed globally: )
+2. Install vendors (ensure to have [Composer](https://getcomposer.org/doc/00-intro.md) installed globally: )
 
 `composer install`
 
