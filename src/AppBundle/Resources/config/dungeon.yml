@@ -2,15 +2,22 @@ parameters:
   dungeon_map:
     -
       #0,0
-      - { name: room 5, id: 1 }
+      - { name: Forge, id: 1 }
       #0,1
-      - { name: room 4, id: 2 }
+      - { name: Summoning Room, id: 2 }
       #0,2
-      - { name: room 3, id: 3 }
+      - { name: Jail, id: 3 }
     -
       #1,0
-      - { name: room 2, id: 4 }
+      - { name: Chapel, id: 4 }
       #1,1
-      - { name: entrance, id: 5 }
+      - { name: Laboratory, id: 5 }
       #1,2
-      - { name: room 1, id: 6 }
+      - { name: Dormitory, id: 6 }
+    -
+      #2,0
+      - { name: Armory, id: 7 }
+      #2,1
+      - { name: Entrance, id: 8 }
+      #2,2
+      - { name: Courthall, id: 9 }

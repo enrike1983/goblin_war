@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class NavigationManager
 {
-    const INITIAL_POSITION = [1,1];
+    const INITIAL_POSITION = [2,1];
     const FORWARD_KEY = 'forward';
     const RIGHT_KEY = 'right';
     const BACK_KEY = 'back';
