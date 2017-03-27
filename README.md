@@ -77,7 +77,7 @@ Creates a new player
      "name": "player@player.com",
      "attack": 41,
      "life": 0,
-     "api_id": "123123123123"
+     "x_auth_token": "123123123123"
  }
 }
 ```
