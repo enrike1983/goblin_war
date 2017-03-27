@@ -4,12 +4,17 @@ namespace AppBundle\Manager;
 use AppBundle\Entity\Monster;
 use Doctrine\ORM\EntityManager;
 
+use SensioLabs\Security\SecurityChecker;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class BattleManager
 {
+    const BATTLE_IN_FIGHT_STATUS = 1;
+    const BATTLE_USER_WINS = 2;
+    const BATTLE_USER_LOSES = 3;
+    const DAMAGE = 5;
+
     protected $token_storage;
-    protected $user_position;
     protected $user;
     protected $entity_manager;
 
@@ -19,7 +24,6 @@ class BattleManager
         $this->entity_manager = $entityManager;
 
         $this->user = $this->token_storage->getToken()->getUser();
-        $this->user_position = $this->user->getPosition();
     }
 
     /**
@@ -57,10 +61,38 @@ class BattleManager
     }
 
     /**
-     * Fights the monster ( greater attack value wins )
+     * Fights the monster ( greater attack value wins. If player looses life -5 )
      */
     public function doFight()
     {
+        $monster = $this->userIsFighting();
+
+        if($monster) {
+
+            $result = $this->user->getAttack() - $monster->getAttack();
+
+            //remove monster
+            $this->entity_manager->remove($monster);
+            $this->entity_manager->flush();
+
+            //player wins
+            if($result > 0) {
+
+                //here we raise up the experience
+
+                return self::BATTLE_USER_WINS;
+            }
+
+            //remove user's life
+            $this->user->setLife($this->user->getLife() - self::DAMAGE);
+            $this->entity_manager->flush();
+            $this->entity_manager->remove($monster);
+            $this->entity_manager->flush();
+
+            return self::BATTLE_USER_LOSES;
+        }
+
+        throw new \BadMethodCallException(__METHOD__.' call not allowed');
     }
 
     /**
@@ -79,16 +111,17 @@ class BattleManager
     }
 
     /**
-     * Makes damage to the user and checks if you are dead
-     */
-    protected function damage()
-    {
-    }
-
-    /**
      * Check if you are dead :D
      */
     protected function youAreDead()
     {
+    }
+
+    /**
+     * Raise up experience when a monster is killed!
+     */
+    protected function raiseUpExperience()
+    {
+
     }
 }

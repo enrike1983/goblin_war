@@ -70,6 +70,11 @@ class User implements UserInterface, \Serializable
     private $position = NavigationManager::INITIAL_POSITION;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $experience;
+
+    /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Monster", mappedBy="user", cascade={"persist", "remove"})
      */
     private $monster;
@@ -98,9 +103,10 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\PrePersist
      */
-    public function setCreatedAtValue()
+    public function presetValues()
     {
         $this->attack = mt_rand(self::MIN_ATTACK, self::MAX_ATTACK);
+        $this->apiKey = bin2hex(random_bytes(22));
     }
 
     public function getUsername()
@@ -373,5 +379,29 @@ class User implements UserInterface, \Serializable
     public function getApiKey()
     {
         return $this->apiKey;
+    }
+
+    /**
+     * Set experience
+     *
+     * @param float $experience
+     *
+     * @return User
+     */
+    public function setExperience($experience)
+    {
+        $this->experience = $experience;
+
+        return $this;
+    }
+
+    /**
+     * Get experience
+     *
+     * @return float
+     */
+    public function getExperience()
+    {
+        return $this->experience;
     }
 }

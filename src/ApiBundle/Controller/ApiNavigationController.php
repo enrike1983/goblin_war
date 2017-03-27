@@ -3,6 +3,7 @@
 namespace ApiBundle\Controller;
 
 use AppBundle\Event\MovementEvent;
+use AppBundle\Manager\BattleManager;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,6 @@ class ApiNavigationController extends FOSRestController
     public function currentPosition()
     {
         $navigation_manager = $this->container->get('app.navigation_manager');
-
         return $navigation_manager->generateUrls();
     }
 
@@ -42,6 +42,6 @@ class ApiNavigationController extends FOSRestController
 
         }
 
-        return ['status' => 'in fight!'];
+        return ['status' => BattleManager::BATTLE_IN_FIGHT_STATUS];
     }
 }
