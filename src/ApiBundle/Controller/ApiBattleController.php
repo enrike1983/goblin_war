@@ -20,12 +20,21 @@ class ApiBattleController extends FOSRestController
 
         try {
             $fight_result = $navigation_manager->doFight();
+
+            $fight_message = 'loser';
+            if($fight_result === BattleManager::BATTLE_USER_WINS) {
+                $fight_message = 'winner';
+            }
             $status_code = Response::HTTP_OK;
         } catch (\BadMethodCallException $e) {
-            $fight_result = $e->getMessage();
+            $fight_result = BattleManager::BATTLE_ERROR;
+            $fight_message = $e->getMessage();
             $status_code = Response::HTTP_BAD_REQUEST;
         }
 
-        return View::create($fight_result, $status_code);
+        return View::create([
+            'fight_result' => $fight_result,
+            'fight_message' => $fight_message
+        ], $status_code);
     }
 }

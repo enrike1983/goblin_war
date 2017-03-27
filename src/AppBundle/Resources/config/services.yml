@@ -9,6 +9,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: app.movement, method: onMovementEvent }
 
+    app.player_manager:
+        class: AppBundle\Manager\PlayerManager
+        arguments: ["@security.token_storage", "@doctrine.orm.entity_manager"]
+
     app.navigation_manager:
         class: AppBundle\Manager\NavigationManager
         arguments: ["%dungeon_map%", "@security.token_storage", "@doctrine.orm.entity_manager", "@event_dispatcher"]

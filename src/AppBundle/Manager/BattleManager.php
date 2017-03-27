@@ -9,11 +9,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class BattleManager
 {
+    const BATTLE_ERROR = 0;
     const BATTLE_IN_FIGHT_STATUS = 1;
     const BATTLE_USER_WINS = 2;
     const BATTLE_USER_LOSES = 3;
     const DAMAGE = 5;
+    const DEAD = 6;
     const EXPERIENCE_PERCENTAGE = 0.15;
+    const MONSTER_SPAW_PROBABILITY = 15;
 
     protected $token_storage;
     protected $user;
@@ -40,11 +43,10 @@ class BattleManager
             return $monster;
         }
 
-        //with a certain probability generates a monster. For now probability = 50% :)
+        //with a certain probability generates a monster. For now probability = 15% :)
         $rand = mt_rand(0, 100);
 
-        //15% probability
-        if ($rand <= 15) {
+        if ($rand <= self::MONSTER_SPAW_PROBABILITY) {
             $new_monster = new Monster();
             $new_monster->setAttack(mt_rand(Monster::MIN_ATTACK, Monster::MAX_ATTACK));
             $new_monster->setUser($this->user);
@@ -122,15 +124,8 @@ class BattleManager
     /**
      * Check if you are dead :D
      */
-    protected function youAreDead()
+    public function youAreDead()
     {
-    }
-
-    /**
-     * Raise up experience when a monster is killed!
-     */
-    protected function raiseUpExperience()
-    {
-
+        return $this->user->getLife() ? false : true;
     }
 }
