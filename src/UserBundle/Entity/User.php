@@ -72,7 +72,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="float")
      */
-    private $experience;
+    private $experience = 0;
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Monster", mappedBy="user", cascade={"persist", "remove"})

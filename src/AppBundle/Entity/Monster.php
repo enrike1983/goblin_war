@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Monster
 {
-    const MIN_ATTACK = 20;
-    const MAX_ATTACK = 40;
+    const MIN_ATTACK = 30;
+    const MAX_ATTACK = 60;
 
     /**
      * @var int
@@ -37,6 +37,13 @@ class Monster
      * @ORM\Column(name="attack", type="integer")
      */
     private $attack;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="experience", type="float")
+     */
+    private $experience;
 
     /**
      * @ORM\OneToOne(targetEntity="UserBundle\Entity\User", inversedBy="monster")
@@ -124,5 +131,29 @@ class Monster
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set experience
+     *
+     * @param float $experience
+     *
+     * @return Monster
+     */
+    public function setExperience($experience)
+    {
+        $this->experience = $experience;
+
+        return $this;
+    }
+
+    /**
+     * Get experience
+     *
+     * @return float
+     */
+    public function getExperience()
+    {
+        return $this->experience;
     }
 }

@@ -13,6 +13,7 @@ class BattleManager
     const BATTLE_USER_WINS = 2;
     const BATTLE_USER_LOSES = 3;
     const DAMAGE = 5;
+    const EXPERIENCE_PERCENTAGE = 0.15;
 
     protected $token_storage;
     protected $user;
@@ -51,6 +52,9 @@ class BattleManager
             $generator = \Nubs\RandomNameGenerator\All::create();
             $new_monster->setName($generator->getName());
 
+            //percentage of attack, so a stronger monster gives much more experience
+            $new_monster->setExperience(self::EXPERIENCE_PERCENTAGE * $new_monster->getAttack());
+
             $this->entity_manager->persist($new_monster);
             $this->entity_manager->flush();
 
@@ -72,6 +76,7 @@ class BattleManager
             $result = $this->user->getAttack() - $monster->getAttack();
 
             //remove monster
+            $this->entity_manager->flush();
             $this->entity_manager->remove($monster);
             $this->entity_manager->flush();
 
@@ -79,6 +84,10 @@ class BattleManager
             if($result > 0) {
 
                 //here we raise up the experience
+                $this->user->setExperience($this->user->getExperience() + $monster->getExperience());
+                $this->entity_manager->flush();
+                $this->entity_manager->remove($monster);
+                $this->entity_manager->flush();
 
                 return self::BATTLE_USER_WINS;
             }
