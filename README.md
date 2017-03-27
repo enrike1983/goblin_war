@@ -24,6 +24,10 @@ Installation is a classical one!
 
 `php bin/console doctrine:fixture:load`
 
+6. Run the server
+`php bin/console server:run`
+
+If everything went ok, you should be able to start doing all the stuffs written below
 
 ## Game Rules
 
