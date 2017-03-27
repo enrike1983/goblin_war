@@ -2,15 +2,15 @@ parameters:
   dungeon_map:
     -
       #0,0
-      - { name: cucina, id: 1 }
+      - { name: room 5, id: 1 }
       #0,1
-      - { name: salotto, id: 2 }
+      - { name: room 4, id: 2 }
       #0,2
-      - { name: giardino, id: 3 }
+      - { name: room 3, id: 3 }
     -
       #1,0
-      - { name: bagno, id: 4 }
+      - { name: room 2, id: 4 }
       #1,1
-      - { name: ingresso, id: 5 }
+      - { name: entrance, id: 5 }
       #1,2
-      - { name: camera, id: 6 }
+      - { name: room 1, id: 6 }
