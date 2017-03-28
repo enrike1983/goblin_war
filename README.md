@@ -50,6 +50,7 @@ The game rules are very easy and very common for a roguelike:
 * Monster's attack value, experience and name are auto generated at runtime when the monster spawns.
 * The world is a YAML file m x n where every "room" has its own properties ( to be implemented in future )
 `goblin_war/src/AppBundle/Resources/config/dungeon.yml`
+* Autosave! Every interaction your player does is directly persisted on the db, like a real MUD :)
 
 ## Developer's Guide
 
