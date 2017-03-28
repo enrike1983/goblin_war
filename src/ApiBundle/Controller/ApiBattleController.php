@@ -37,4 +37,31 @@ class ApiBattleController extends FOSRestController
             'fight_message' => $fight_message
         ], $status_code);
     }
+
+    /**
+     * @Rest\Get("/battle/escape")
+     */
+    public function escape()
+    {
+        $navigation_manager = $this->container->get('app.battle_manager');
+
+        try {
+            $fight_result = $navigation_manager->doEscape();
+
+            $fight_message = 'escape not successful :(';
+            if ($fight_result === BattleManager::ESCAPE_SUCCESS) {
+                $fight_message = 'escape successful :)';
+            }
+            $status_code = Response::HTTP_OK;
+        } catch (\BadMethodCallException $e) {
+            $fight_result = BattleManager::BATTLE_ERROR;
+            $fight_message = $e->getMessage();
+            $status_code = Response::HTTP_BAD_REQUEST;
+        }
+
+        return View::create([
+            'escape_result' => $fight_result,
+            'escape_message' => $fight_message
+        ], $status_code);
+    }
 }

@@ -13,10 +13,14 @@ class BattleManager
     const BATTLE_IN_FIGHT_STATUS = 1;
     const BATTLE_USER_WINS = 2;
     const BATTLE_USER_LOSES = 3;
+    const BATTLE_USER_ESCAPES = 4;
     const DAMAGE = 5;
     const DEAD = 6;
     const EXPERIENCE_PERCENTAGE = 0.15;
     const MONSTER_SPAW_PROBABILITY = 15;
+    const ESCAPE_SUCCESS_PROBABILITY = 60;
+    const ESCAPE_SUCCESS = 7;
+    const ESCAPE_FAIL = 8;
 
     protected $token_storage;
     protected $user;
@@ -26,7 +30,6 @@ class BattleManager
     {
         $this->token_storage = $tokenStorage;
         $this->entity_manager = $entityManager;
-
         $this->user = $this->token_storage->getToken()->getUser();
     }
 
@@ -95,10 +98,7 @@ class BattleManager
             }
 
             //remove user's life
-            $this->user->setLife($this->user->getLife() - self::DAMAGE);
-            $this->entity_manager->flush();
-            $this->entity_manager->remove($monster);
-            $this->entity_manager->flush();
+            $this->userTakesDamageByMonster($this->user, $monster);
 
             return self::BATTLE_USER_LOSES;
         }
@@ -111,6 +111,24 @@ class BattleManager
      */
     public function doEscape()
     {
+        $monster = $this->userIsFighting();
+
+        if($monster) {
+
+            $rand = mt_rand(0, 100);
+
+            if ($rand <= self::ESCAPE_SUCCESS_PROBABILITY) {
+                //success
+                return self::ESCAPE_SUCCESS;
+            }
+
+            //fail
+            $this->userTakesDamageByMonster($this->user, $monster);
+
+            return self::ESCAPE_FAIL;
+        }
+
+        throw new \BadMethodCallException(__METHOD__.' call not allowed');
     }
 
     /**
@@ -119,6 +137,20 @@ class BattleManager
     public function userIsFighting()
     {
         return $this->user->getMonster();
+    }
+
+    /**
+     * User takes damage from a monster
+     *
+     * @param $user
+     * @param $monster
+     */
+    public function userTakesDamageByMonster($user, $monster)
+    {
+        $user->setLife($user->getLife() - self::DAMAGE);
+        $this->entity_manager->flush();
+        $this->entity_manager->remove($monster);
+        $this->entity_manager->flush();
     }
 
     /**
