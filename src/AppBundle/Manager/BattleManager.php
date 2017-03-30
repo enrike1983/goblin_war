@@ -15,6 +15,7 @@ class BattleManager
     const BATTLE_USER_WINS = 2;
     const BATTLE_USER_LOSES = 3;
     const BATTLE_USER_ESCAPES = 4;
+    const PLAYER_IS_MOVING = 5;
     const PLAYER_IS_DEAD = 6;
     const ESCAPE_SUCCESS = 7;
     const ESCAPE_FAIL = 8;

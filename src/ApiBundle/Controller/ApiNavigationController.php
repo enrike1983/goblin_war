@@ -20,11 +20,25 @@ class ApiNavigationController extends FOSRestController
     {
         $navigation_manager = $this->container->get('app.navigation_manager');
         $player_manager = $this->container->get('app.player_manager');
+        $battle_manager = $this->container->get('app.battle_manager');
 
-        return [
-            'player_profile' => $player_manager->getPlayerProfile(),
-            'navigation' => $navigation_manager->generateUrls()
-        ];
+        $fight_info_array = array();
+
+        //you are fighting. You can't move!
+        if($battle_manager->userIsFighting()) {
+            $fight_info_array = [
+                'player_status' => BattleManager::BATTLE_IN_FIGHT_STATUS,
+                'status_description' => 'A monster appear! You cannot move. Fight (/api/battle/fight) or try to escape (/api/battle/escape)!',
+            ];
+        }
+
+        return array_merge(
+            $fight_info_array, [
+                'player_status' => BattleManager::PLAYER_IS_MOVING,
+                'player_profile' => $player_manager->getPlayerProfile(),
+                'navigation' => $navigation_manager->generateUrls()
+            ]
+        );
 
     }
 
@@ -63,6 +77,7 @@ class ApiNavigationController extends FOSRestController
         $player_manager = $this->container->get('app.player_manager');
 
         return [
+            'player_status' => BattleManager::PLAYER_IS_MOVING,
             'player_profile' => $player_manager->getPlayerProfile(),
             'navigation' => $navigation_manager->{'go'.ucfirst($direction)}(),
         ];

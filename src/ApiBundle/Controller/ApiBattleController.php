@@ -36,7 +36,7 @@ class ApiBattleController extends FOSRestController
         }
 
         return View::create([
-            'fight_result' => $fight_result,
+            'player_status' => $fight_result,
             'fight_message' => $fight_message
         ], $status_code);
     }
@@ -64,7 +64,7 @@ class ApiBattleController extends FOSRestController
         }
 
         return View::create([
-            'escape_result' => $fight_result,
+            'player_status' => $fight_result,
             'escape_message' => $fight_message
         ], $status_code);
     }

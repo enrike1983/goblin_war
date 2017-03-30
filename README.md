@@ -92,6 +92,7 @@ Get the current position in the World.
 #### Return Example
 ```json
 {
+ "player_status": 5,
  "player_profile": {
      "name": "player@player.com",
      "attack": 41,
@@ -158,7 +159,7 @@ Fight with the current monster
 
 ```json
 {
-    "fight_result": 3,
+    "player_status": 3,
     "fight_message": "loser"
 }
 ```
