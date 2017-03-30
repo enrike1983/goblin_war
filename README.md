@@ -43,6 +43,7 @@ The game rules are very easy and very common for a roguelike:
 6. If the player wins gains the experience "shipped" by the monster and is added to the current experience.
 7. If the player loses does not gain any experience and takes 5 points of damage
 8. If the energy of the player reaches 0 he dies and is not able to move any more! You need to create a new character
+9. The user can escape but with a certain probability it can fails! :D If you fail escaping... you will lose a bit of life
 
 ### Game notes
 
