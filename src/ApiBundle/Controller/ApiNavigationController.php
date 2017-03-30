@@ -62,6 +62,7 @@ class ApiNavigationController extends FOSRestController
      */
     public function movement($direction)
     {
+        $navigation_manager = $this->container->get('app.navigation_manager');
         $battle_manager = $this->container->get('app.battle_manager');
 
         //you are dead. Sorry
@@ -77,6 +78,7 @@ class ApiNavigationController extends FOSRestController
             return [
                 'player_status' => BattleManager::BATTLE_IN_FIGHT_STATUS,
                 'status_description' => 'A monster appear! You cannot move. Fight or try to escape!',
+                'navigation' => $navigation_manager->generateUrls()
             ];
         }
 
@@ -84,7 +86,7 @@ class ApiNavigationController extends FOSRestController
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch('app.movement');
 
-        $navigation_manager = $this->container->get('app.navigation_manager');
+
         $player_manager = $this->container->get('app.player_manager');
 
         return [
