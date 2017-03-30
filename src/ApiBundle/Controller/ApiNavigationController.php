@@ -4,17 +4,15 @@ namespace ApiBundle\Controller;
 
 use AppBundle\Manager\BattleManager;
 use FOS\RestBundle\Controller\FOSRestController;
-//use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class ApiNavigationController extends FOSRestController
 {
     /**
-     * @Route("/movement/current-position")
-     * @Method({"GET", "OPTIONS"})
+     * @Rest\Get("/movement/current-position")
+     *
      */
     public function currentPosition()
     {
@@ -29,8 +27,7 @@ class ApiNavigationController extends FOSRestController
     }
 
     /**
-     * @Route("/movement/{direction}")
-     * @Method({"GET", "OPTIONS"})
+     * @Rest\Get("/movement/{direction}")
      *
      * @param $direction
      * @return mixed
