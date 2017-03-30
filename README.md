@@ -162,4 +162,15 @@ Fight with the current monster
     "fight_message": "loser"
 }
 ```
+### Codes Explanation
 
+Except for the common HTTP codes ( 4xx, 5xx ) Goblin War uses a set of custom codes shipped with the response to tell the client what happens: 
+
+    const BATTLE_ERROR = 0;
+    const BATTLE_IN_FIGHT_STATUS = 1;
+    const BATTLE_USER_WINS = 2;
+    const BATTLE_USER_LOSES = 3;
+    const BATTLE_USER_ESCAPES = 4;
+    const PLAYER_IS_DEAD = 6;
+    const ESCAPE_SUCCESS = 7;
+    const ESCAPE_FAIL = 8;
