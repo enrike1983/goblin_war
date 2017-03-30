@@ -15,13 +15,14 @@ class BattleManager
     const BATTLE_USER_WINS = 2;
     const BATTLE_USER_LOSES = 3;
     const BATTLE_USER_ESCAPES = 4;
-    const PLAYER_TAKES_DAMAGE = 5;
     const PLAYER_IS_DEAD = 6;
+    const ESCAPE_SUCCESS = 7;
+    const ESCAPE_FAIL = 8;
+
     const EXPERIENCE_PERCENTAGE = 0.15;
     const MONSTER_SPAW_PROBABILITY = 15;
     const ESCAPE_SUCCESS_PROBABILITY = 60;
-    const ESCAPE_SUCCESS = 7;
-    const ESCAPE_FAIL = 8;
+    const DAMAGE_RATE = 5;
 
     protected $token_storage;
     protected $token;
@@ -165,7 +166,7 @@ class BattleManager
      */
     public function userTakesDamageByMonster($user, $monster)
     {
-        $user->setLife($user->getLife() - self::DAMAGE);
+        $user->setLife($user->getLife() - self::DAMAGE_RATE);
         $this->entity_manager->flush();
         $this->entity_manager->remove($monster);
         $this->entity_manager->flush();
