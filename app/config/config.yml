@@ -73,12 +73,21 @@ swiftmailer:
 
 # Nelmio CORS Configuration
 nelmio_cors:
-    paths:
-        '^/api/':
-            allow_origin: ['*']
-            allow_headers: ['*']
-            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
-            max_age: 3600
+        defaults:
+            allow_credentials: false
+            allow_origin: []
+            allow_headers: []
+            allow_methods: []
+            expose_headers: []
+            max_age: 0
+            hosts: []
+            origin_regex: false
+        paths:
+            '^/api':
+                allow_origin: ['*']
+                allow_headers: ['*']
+                allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+                max_age: 3600
 
 # FOSRest Configuration
 fos_rest:

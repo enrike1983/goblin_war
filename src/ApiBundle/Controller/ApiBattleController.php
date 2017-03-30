@@ -4,15 +4,18 @@ namespace ApiBundle\Controller;
 
 use AppBundle\Manager\BattleManager;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
+//use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class ApiBattleController extends FOSRestController
 {
     /**
-     * @Rest\Get("/battle/fight")
+     * @Route("/battle/fight")
+     * @Method({"GET", "OPTIONS"})
      */
     public function fight()
     {
@@ -39,7 +42,8 @@ class ApiBattleController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/battle/escape")
+     * @Route("/battle/escape")
+     * @Method({"GET", "OPTIONS"})
      */
     public function escape()
     {
