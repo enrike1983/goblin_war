@@ -23,18 +23,21 @@ class ApiNavigationController extends FOSRestController
         $battle_manager = $this->container->get('app.battle_manager');
 
         $fight_info_array = array();
+        $player_status = null;
 
         //you are fighting. You can't move!
         if($battle_manager->userIsFighting()) {
+
+            $player_status = BattleManager::BATTLE_IN_FIGHT_STATUS;
+
             $fight_info_array = [
-                'player_status' => BattleManager::BATTLE_IN_FIGHT_STATUS,
                 'status_description' => 'A monster appear! You cannot move. Fight (/api/battle/fight) or try to escape (/api/battle/escape)!',
             ];
         }
 
         return array_merge(
             $fight_info_array, [
-                'player_status' => BattleManager::PLAYER_IS_MOVING,
+                'player_status' => $player_status ?: BattleManager::PLAYER_IS_MOVING,
                 'player_profile' => $player_manager->getPlayerProfile(),
                 'navigation' => $navigation_manager->generateUrls()
             ]
