@@ -15,8 +15,8 @@ class BattleManager
     const BATTLE_USER_WINS = 2;
     const BATTLE_USER_LOSES = 3;
     const BATTLE_USER_ESCAPES = 4;
-    const DAMAGE = 5;
-    const DEAD = 6;
+    const PLAYER_TAKES_DAMAGE = 5;
+    const PLAYER_IS_DEAD = 6;
     const EXPERIENCE_PERCENTAGE = 0.15;
     const MONSTER_SPAW_PROBABILITY = 15;
     const ESCAPE_SUCCESS_PROBABILITY = 60;

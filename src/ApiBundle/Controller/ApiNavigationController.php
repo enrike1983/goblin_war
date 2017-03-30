@@ -42,7 +42,7 @@ class ApiNavigationController extends FOSRestController
         //you are dead. Sorry
         if($battle_manager->youAreDead()) {
             return [
-                'player_status' => BattleManager::DEAD,
+                'player_status' => BattleManager::PLAYER_IS_DEAD,
                 'status_description' => 'You are dead'
             ];
         }
