@@ -5,6 +5,7 @@ use AppBundle\Entity\Monster;
 use Doctrine\ORM\EntityManager;
 
 use SensioLabs\Security\SecurityChecker;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class BattleManager
@@ -23,6 +24,7 @@ class BattleManager
     const ESCAPE_FAIL = 8;
 
     protected $token_storage;
+    protected $token;
     protected $user;
     protected $entity_manager;
 
@@ -30,7 +32,16 @@ class BattleManager
     {
         $this->token_storage = $tokenStorage;
         $this->entity_manager = $entityManager;
-        $this->user = $this->token_storage->getToken()->getUser();
+        $this->token = $this->token_storage->getToken();
+    }
+
+    protected function getUser()
+    {
+        if($this->token) {
+            return $this->token->getUser();
+        }
+
+        throw new UnauthorizedHttpException('Auth');
     }
 
     /**
@@ -39,8 +50,10 @@ class BattleManager
      */
     public function spawnMonster()
     {
+        $user = $this->getUser();
+
         //exists already a monster for this user?
-        $monster = $this->user->getMonster();
+        $monster = $user->getMonster();
 
         if ($monster) {
             return $monster;
@@ -52,7 +65,7 @@ class BattleManager
         if ($rand <= self::MONSTER_SPAW_PROBABILITY) {
             $new_monster = new Monster();
             $new_monster->setAttack(mt_rand(Monster::MIN_ATTACK, Monster::MAX_ATTACK));
-            $new_monster->setUser($this->user);
+            $new_monster->setUser($user);
 
             $generator = \Nubs\RandomNameGenerator\All::create();
             $new_monster->setName($generator->getName());
@@ -74,11 +87,13 @@ class BattleManager
      */
     public function doFight()
     {
+        $user = $this->getUser();
+
         $monster = $this->userIsFighting();
 
         if($monster) {
 
-            $result = $this->user->getAttack() - $monster->getAttack();
+            $result = $user->getAttack() - $monster->getAttack();
 
             //remove monster
             $this->entity_manager->flush();
@@ -89,7 +104,7 @@ class BattleManager
             if($result > 0) {
 
                 //here we raise up the experience
-                $this->user->setExperience($this->user->getExperience() + $monster->getExperience());
+                $user->setExperience($user->getExperience() + $monster->getExperience());
                 $this->entity_manager->flush();
                 $this->entity_manager->remove($monster);
                 $this->entity_manager->flush();
@@ -98,7 +113,7 @@ class BattleManager
             }
 
             //remove user's life
-            $this->userTakesDamageByMonster($this->user, $monster);
+            $this->userTakesDamageByMonster($user, $monster);
 
             return self::BATTLE_USER_LOSES;
         }
@@ -111,6 +126,8 @@ class BattleManager
      */
     public function doEscape()
     {
+        $user = $this->getUser();
+
         $monster = $this->userIsFighting();
 
         if($monster) {
@@ -123,7 +140,7 @@ class BattleManager
             }
 
             //fail
-            $this->userTakesDamageByMonster($this->user, $monster);
+            $this->userTakesDamageByMonster($user, $monster);
 
             return self::ESCAPE_FAIL;
         }
@@ -136,7 +153,8 @@ class BattleManager
      */
     public function userIsFighting()
     {
-        return $this->user->getMonster();
+        $user = $this->getUser();
+        return $user->getMonster();
     }
 
     /**
@@ -158,6 +176,7 @@ class BattleManager
      */
     public function youAreDead()
     {
-        return $this->user->getLife() ? false : true;
+        $user = $this->getUser();
+        return $user->getLife() ? false : true;
     }
 }
