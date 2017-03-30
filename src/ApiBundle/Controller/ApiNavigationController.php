@@ -25,6 +25,14 @@ class ApiNavigationController extends FOSRestController
         $fight_info_array = array();
         $player_status = null;
 
+        //you are dead. Sorry
+        if($battle_manager->youAreDead()) {
+            return [
+                'player_status' => BattleManager::PLAYER_IS_DEAD,
+                'status_description' => 'You are dead',
+            ];
+        }
+
         //you are fighting. You can't move!
         if($battle_manager->userIsFighting()) {
 
