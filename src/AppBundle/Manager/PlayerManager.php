@@ -26,6 +26,7 @@ class PlayerManager
             'name' => $this->user->getUsername(),
             'attack' => $this->user->getAttack(),
             'life' => $this->user->getLife(),
+            'experience' => $this->user->getExperience()
         ];
     }
 }
