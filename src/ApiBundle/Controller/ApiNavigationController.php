@@ -12,6 +12,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class ApiNavigationController extends FOSRestController
 {
+    const MESSAGE_MONSTER_APPEAR = 'A monster appear! You cannot move. Fight (/api/battle/fight) or try to escape (/api/battle/escape)!';
+    const MESSAGE_YOU_ARE_DEAD = 'You are dead';
+
     /**
      * @Route("/movement/current-position")
      * @Method({"GET", "OPTIONS"})
@@ -29,7 +32,7 @@ class ApiNavigationController extends FOSRestController
         if($battle_manager->youAreDead()) {
             return [
                 'player_status' => BattleManager::PLAYER_IS_DEAD,
-                'status_description' => 'You are dead',
+                'status_description' => self::MESSAGE_YOU_ARE_DEAD,
             ];
         }
 
@@ -37,9 +40,8 @@ class ApiNavigationController extends FOSRestController
         if($battle_manager->userIsFighting()) {
 
             $player_status = BattleManager::BATTLE_IN_FIGHT_STATUS;
-
             $fight_info_array = [
-                'status_description' => 'A monster appear! You cannot move. Fight (/api/battle/fight) or try to escape (/api/battle/escape)!',
+                'status_description' => self::MESSAGE_MONSTER_APPEAR,
             ];
         }
 
@@ -70,7 +72,7 @@ class ApiNavigationController extends FOSRestController
         if($battle_manager->youAreDead()) {
             return [
                 'player_status' => BattleManager::PLAYER_IS_DEAD,
-                'status_description' => 'You are dead',
+                'status_description' => self::MESSAGE_YOU_ARE_DEAD,
             ];
         }
 
@@ -78,7 +80,7 @@ class ApiNavigationController extends FOSRestController
         if($battle_manager->userIsFighting()) {
             return [
                 'player_status' => BattleManager::BATTLE_IN_FIGHT_STATUS,
-                'status_description' => 'A monster appear! You cannot move. Fight or try to escape!',
+                'status_description' => self::MESSAGE_MONSTER_APPEAR,
                 'navigation' => $navigation_manager->generateUrls(),
                 'player_profile' => $player_manager->getPlayerProfile(),
             ];

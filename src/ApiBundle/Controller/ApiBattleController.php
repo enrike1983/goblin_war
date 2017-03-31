@@ -13,6 +13,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class ApiBattleController extends FOSRestController
 {
+    const MESSAGE_WINNER = 'Winner!';
+    const MESSAGE_LOSER = 'Loser :(';
+    const MESSAGE_ESCAPE_SUCCESS = 'Escape successful';
+    const MESSAGE_ESCAPE_FAIL = 'Escape fail :(';
+
     /**
      * @Route("/battle/fight")
      * @Method({"GET", "OPTIONS"})
@@ -24,9 +29,9 @@ class ApiBattleController extends FOSRestController
         try {
             $fight_result = $navigation_manager->doFight();
 
-            $fight_message = 'loser';
+            $fight_message = self::MESSAGE_LOSER;
             if($fight_result === BattleManager::BATTLE_USER_WINS) {
-                $fight_message = 'winner';
+                $fight_message = self::MESSAGE_WINNER;
             }
             $status_code = Response::HTTP_OK;
         } catch (\BadMethodCallException $e) {
@@ -52,9 +57,9 @@ class ApiBattleController extends FOSRestController
         try {
             $fight_result = $navigation_manager->doEscape();
 
-            $fight_message = 'escape not successful :(';
+            $fight_message = self::MESSAGE_ESCAPE_FAIL;
             if ($fight_result === BattleManager::ESCAPE_SUCCESS) {
-                $fight_message = 'escape successful :)';
+                $fight_message = self::MESSAGE_ESCAPE_SUCCESS;
             }
             $status_code = Response::HTTP_OK;
         } catch (\BadMethodCallException $e) {
