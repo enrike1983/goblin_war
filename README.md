@@ -93,28 +93,32 @@ Get the current position in the World.
 #### Return Example
 ```json
 {
- "player_status": 5,
- "player_profile": {
-     "name": "player@player.com",
-     "attack": 41,
-     "life": 0
- },
- "navigation": {
-     "forward": false,
-     "left": {
-         "name": "Room 1",
-         "id": 2
-     },
-     "right": false,
-     "back": {
-         "name": "Room 2",
-         "id": 6
-     },
-     "current": {
-         "name": "Room 3",
-         "id": 3
-     }
- }
+    "player_status": 3,
+    "message": "Loser :(",
+    "navigation": {
+        "forward": false,
+        "left": {
+            "name": "Forge",
+            "id": 1
+        },
+        "right": {
+            "name": "Jail",
+            "id": 3
+        },
+        "back": {
+            "name": "Laboratory",
+            "id": 5
+        },
+        "current": {
+            "name": "Summoning Room",
+            "id": 2
+        }
+    },
+    "player_profile": {
+        "name": "cicciz",
+        "attack": 30,
+        "life": 30
+    }
 }
 ```
 
@@ -161,7 +165,31 @@ Fight with the current monster
 ```json
 {
     "player_status": 3,
-    "fight_message": "loser"
+    "message": "Loser :(",
+    "navigation": {
+        "forward": false,
+        "left": {
+            "name": "Forge",
+            "id": 1
+        },
+        "right": {
+            "name": "Jail",
+            "id": 3
+        },
+        "back": {
+            "name": "Laboratory",
+            "id": 5
+        },
+        "current": {
+            "name": "Summoning Room",
+            "id": 2
+        }
+    },
+    "player_profile": {
+        "name": "cicciz",
+        "attack": 30,
+        "life": 30
+    }
 }
 ```
 ### Codes Explanation
