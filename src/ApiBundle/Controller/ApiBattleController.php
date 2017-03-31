@@ -3,15 +3,14 @@
 namespace ApiBundle\Controller;
 
 use AppBundle\Manager\BattleManager;
-use FOS\RestBundle\Controller\FOSRestController;
 //use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use ApiBundle\Controller\BaseController as BaseController;
 
-class ApiBattleController extends FOSRestController
+class ApiBattleController extends BaseController
 {
     const MESSAGE_WINNER = 'Winner!';
     const MESSAGE_LOSER = 'Loser :(';
@@ -25,6 +24,7 @@ class ApiBattleController extends FOSRestController
     public function fight()
     {
         $navigation_manager = $this->container->get('app.battle_manager');
+        $player_manager = $this->container->get('app.player_manager');
 
         try {
             $fight_result = $navigation_manager->doFight();
@@ -40,10 +40,14 @@ class ApiBattleController extends FOSRestController
             $status_code = Response::HTTP_BAD_REQUEST;
         }
 
-        return View::create([
-            'player_status' => $fight_result,
-            'fight_message' => $fight_message
-        ], $status_code);
+        //response
+        return $this->getGwResponse(
+            $fight_result,
+            $player_manager->getPlayerProfile(),
+            $navigation_manager->generateUrls(),
+            $fight_result,
+            $status_code
+        );
     }
 
     /**
@@ -53,6 +57,7 @@ class ApiBattleController extends FOSRestController
     public function escape()
     {
         $navigation_manager = $this->container->get('app.battle_manager');
+        $player_manager = $this->container->get('app.player_manager');
 
         try {
             $fight_result = $navigation_manager->doEscape();
@@ -68,9 +73,13 @@ class ApiBattleController extends FOSRestController
             $status_code = Response::HTTP_BAD_REQUEST;
         }
 
-        return View::create([
-            'player_status' => $fight_result,
-            'escape_message' => $fight_message
-        ], $status_code);
+        //response
+        return $this->getGwResponse(
+            $fight_result,
+            $player_manager->getPlayerProfile(),
+            $navigation_manager->generateUrls(),
+            $fight_result,
+            $status_code
+        );
     }
 }

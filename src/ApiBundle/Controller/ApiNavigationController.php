@@ -3,18 +3,16 @@
 namespace ApiBundle\Controller;
 
 use AppBundle\Manager\BattleManager;
-use FOS\RestBundle\Controller\FOSRestController;
+
 //use FOS\RestBundle\Controller\Annotations as Rest;
+use ApiBundle\Controller\BaseController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
-class ApiNavigationController extends FOSRestController
+class ApiNavigationController extends BaseController
 {
-    const MESSAGE_MONSTER_APPEAR = 'A monster appear! You cannot move. Fight (/api/battle/fight) or try to escape (/api/battle/escape)!';
-    const MESSAGE_YOU_ARE_DEAD = 'You are dead';
-
     /**
      * @Route("/movement/current-position")
      * @Method({"GET", "OPTIONS"})
@@ -25,34 +23,39 @@ class ApiNavigationController extends FOSRestController
         $player_manager = $this->container->get('app.player_manager');
         $battle_manager = $this->container->get('app.battle_manager');
 
-        $fight_info_array = array();
-        $player_status = null;
-
         //you are dead. Sorry
         if($battle_manager->youAreDead()) {
-            return [
-                'player_status' => BattleManager::PLAYER_IS_DEAD,
-                'status_description' => self::MESSAGE_YOU_ARE_DEAD,
-            ];
+
+            //response
+            return $this->getGwResponse(
+                BattleManager::PLAYER_IS_DEAD,
+                $player_manager->getPlayerProfile(),
+                $navigation_manager->generateUrls(),
+                self::MESSAGE_YOU_ARE_DEAD,
+                Response::HTTP_OK
+            );
         }
 
         //you are fighting. You can't move!
         if($battle_manager->userIsFighting()) {
 
-            $player_status = BattleManager::BATTLE_IN_FIGHT_STATUS;
-            $fight_info_array = [
-                'status_description' => self::MESSAGE_MONSTER_APPEAR,
-            ];
+            //response
+            return $this->getGwResponse(
+                BattleManager::BATTLE_IN_FIGHT_STATUS,
+                $player_manager->getPlayerProfile(),
+                $navigation_manager->generateUrls(),
+                self::MESSAGE_MONSTER_APPEAR,
+                Response::HTTP_OK
+            );
         }
 
-        return array_merge(
-            $fight_info_array, [
-                'player_status' => $player_status ?: BattleManager::PLAYER_IS_MOVING,
-                'player_profile' => $player_manager->getPlayerProfile(),
-                'navigation' => $navigation_manager->generateUrls()
-            ]
+        return $this->getGwResponse(
+            BattleManager::PLAYER_IS_MOVING,
+            $player_manager->getPlayerProfile(),
+            $navigation_manager->generateUrls(),
+            self::MESSAGE_MOVING,
+            Response::HTTP_OK
         );
-
     }
 
     /**
@@ -70,30 +73,36 @@ class ApiNavigationController extends FOSRestController
 
         //you are dead. Sorry
         if($battle_manager->youAreDead()) {
-            return [
-                'player_status' => BattleManager::PLAYER_IS_DEAD,
-                'status_description' => self::MESSAGE_YOU_ARE_DEAD,
-            ];
+            return $this->getGwResponse(
+                BattleManager::PLAYER_IS_DEAD,
+                $player_manager->getPlayerProfile(),
+                $navigation_manager->generateUrls(),
+                self::MESSAGE_YOU_ARE_DEAD,
+                Response::HTTP_OK
+            );
         }
 
         //you are fighting. You can't move!
         if($battle_manager->userIsFighting()) {
-            return [
-                'player_status' => BattleManager::BATTLE_IN_FIGHT_STATUS,
-                'status_description' => self::MESSAGE_MONSTER_APPEAR,
-                'navigation' => $navigation_manager->generateUrls(),
-                'player_profile' => $player_manager->getPlayerProfile(),
-            ];
+            return $this->getGwResponse(
+                BattleManager::BATTLE_IN_FIGHT_STATUS,
+                $player_manager->getPlayerProfile(),
+                $navigation_manager->generateUrls(),
+                self::MESSAGE_MONSTER_APPEAR,
+                Response::HTTP_OK
+            );
         }
 
         //monster spawn attempt
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch('app.movement');
 
-        return [
-            'player_status' => BattleManager::PLAYER_IS_MOVING,
-            'player_profile' => $player_manager->getPlayerProfile(),
-            'navigation' => $navigation_manager->{'go'.ucfirst($direction)}(),
-        ];
+        return $this->getGwResponse(
+            BattleManager::PLAYER_IS_MOVING,
+            $player_manager->getPlayerProfile(),
+            $navigation_manager->{'go'.ucfirst($direction)}(),
+            self::MESSAGE_MOVING,
+            Response::HTTP_OK
+        );
     }
 }
