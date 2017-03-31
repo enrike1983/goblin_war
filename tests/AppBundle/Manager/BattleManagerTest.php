@@ -92,9 +92,19 @@ class BattleManagerTest extends TestCase
      */
     public function getMockEntityManager()
     {
-        return $this->getMockBuilder(EntityManager::class)
+        $mock_entity_manager = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
+            ->setMethods(['persist', 'flush'])
             ->getMock();
+
+        $mock_entity_manager->expects($this->any())
+          ->method('flush');
+
+        $mock_entity_manager->expects($this->any())
+          ->method('persist');
+
+
+        return $mock_entity_manager;
     }
 
     /**
@@ -122,7 +132,7 @@ class BattleManagerTest extends TestCase
             $this->getMockEntityManager()
         );
 
-        mt_srand(10);
+        mt_srand(56);
 
         $monster = $mock_battle_manager->spawnMonster();
 

@@ -31,7 +31,8 @@
         "twig/twig": "^1.0||^2.0",
         "friendsofsymfony/rest-bundle": "^2.1",
         "nelmio/cors-bundle": "^1.5",
-        "nubs/random-name-generator": "^2.1"
+        "nubs/random-name-generator": "^2.1",
+        "phpunit/phpunit": "^6.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

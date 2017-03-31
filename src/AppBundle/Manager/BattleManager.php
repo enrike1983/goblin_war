@@ -61,10 +61,11 @@ class BattleManager
             return $monster;
         }
 
-        //with a certain probability generates a monster. For now probability = 15% :)
+        //with a certain probability generates a monster. For now probability = MONSTER_SPAW_PROBABILITY
         $rand = mt_rand(0, 100);
 
         if ($rand <= self::MONSTER_SPAW_PROBABILITY) {
+
             $new_monster = new Monster();
             $new_monster->setAttack(mt_rand(Monster::MIN_ATTACK, Monster::MAX_ATTACK));
             $new_monster->setUser($user);
