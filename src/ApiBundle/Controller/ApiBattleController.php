@@ -23,11 +23,12 @@ class ApiBattleController extends BaseController
      */
     public function fight()
     {
-        $navigation_manager = $this->container->get('app.battle_manager');
+        $navigation_manager = $this->container->get('app.navigation_manager');
+        $battle_manager = $this->container->get('app.battle_manager');
         $player_manager = $this->container->get('app.player_manager');
 
         try {
-            $fight_result = $navigation_manager->doFight();
+            $fight_result = $battle_manager->doFight();
 
             $fight_message = self::MESSAGE_LOSER;
             if($fight_result === BattleManager::BATTLE_USER_WINS) {
@@ -45,7 +46,7 @@ class ApiBattleController extends BaseController
             $fight_result,
             $player_manager->getPlayerProfile(),
             $navigation_manager->generateUrls(),
-            $fight_result,
+            $fight_message,
             $status_code
         );
     }
@@ -56,11 +57,12 @@ class ApiBattleController extends BaseController
      */
     public function escape()
     {
-        $navigation_manager = $this->container->get('app.battle_manager');
+        $navigation_manager = $this->container->get('app.navigation_manager');
         $player_manager = $this->container->get('app.player_manager');
+        $battle_manager = $this->container->get('app.battle_manager');
 
         try {
-            $fight_result = $navigation_manager->doEscape();
+            $fight_result = $battle_manager->doEscape();
 
             $fight_message = self::MESSAGE_ESCAPE_FAIL;
             if ($fight_result === BattleManager::ESCAPE_SUCCESS) {
@@ -78,7 +80,7 @@ class ApiBattleController extends BaseController
             $fight_result,
             $player_manager->getPlayerProfile(),
             $navigation_manager->generateUrls(),
-            $fight_result,
+            $fight_message,
             $status_code
         );
     }
